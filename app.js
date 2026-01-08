@@ -245,6 +245,25 @@ function initDetail() {
         <tbody>${rows}</tbody>
       </table>
 
+      <div class="payBox">
+  <div class="payHeader">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="DANA" class="payLogo">
+    <div>
+      <div class="payTitle">Pembayaran via DANA</div>
+      <div class="paySubtitle">Silakan transfer ke nomor berikut</div>
+    </div>
+  </div>
+
+  <div class="payNumber">
+    <span>083136937804</span>
+    <small>a.n Pemilik Hutang</small>
+  </div>
+
+  <div class="payNote">
+    Setelah melakukan pembayaran, harap konfirmasi ke admin.
+  </div>
+</div>
+
       <div class="mini" style="margin-top:12px">
         Status hanya tampilan (view only) dan tidak bisa diubah.
       </div>
