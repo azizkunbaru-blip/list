@@ -1,0 +1,271 @@
+// app.js
+const fmtIDR = (n) =>
+  new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", maximumFractionDigits: 0 }).format(n);
+
+const fmtDate = (iso) => {
+  const d = new Date(iso + "T00:00:00");
+  return d.toLocaleDateString("id-ID", { day: "2-digit", month: "long", year: "numeric" });
+};
+
+const daysDiff = (iso) => {
+  const now = new Date();
+  const due = new Date(iso + "T00:00:00");
+  const ms = due.setHours(0, 0, 0, 0) - new Date(now.setHours(0, 0, 0, 0));
+  return Math.round(ms / (1000 * 60 * 60 * 24));
+};
+
+const dueClass = (iso) => {
+  const d = daysDiff(iso);
+  if (d < 0) return "bad";
+  if (d <= 3) return "warn";
+  return "ok";
+};
+
+const storageKey = (itemId) => `paid:${itemId}`;
+const isPaid = (itemId) => localStorage.getItem(storageKey(itemId)) === "1";
+const setPaid = (itemId, val) => localStorage.setItem(storageKey(itemId), val ? "1" : "0");
+
+const getParam = (k) => new URLSearchParams(location.search).get(k);
+
+function sum(items) {
+  return items.reduce((s, x) => s + x.amount, 0);
+}
+
+function sumUnpaid(items) {
+  return items.reduce((s, x) => s + (isPaid(x.id) ? 0 : x.amount), 0);
+}
+
+function sumPaid(items) {
+  return items.reduce((s, x) => s + (isPaid(x.id) ? x.amount : 0), 0);
+}
+
+function uniqBanks(data) {
+  const set = new Set();
+  data.forEach(p => p.items.forEach(i => set.add(i.bank)));
+  return [...set].sort((a,b)=>a.localeCompare(b,"id"));
+}
+
+/* =======================
+   PAGE: INDEX
+======================= */
+function initIndex() {
+  const data = window.DEBT_DATA;
+  const qEl = document.getElementById("q");
+  const bankEl = document.getElementById("bankFilter");
+  const sortEl = document.getElementById("sortBy");
+  const listEl = document.getElementById("list");
+  const countEl = document.getElementById("countPill");
+  const todayEl = document.getElementById("todayText");
+
+  todayEl.textContent =
+    "Hari ini: " + new Date().toLocaleDateString("id-ID", { weekday:"long", day:"2-digit", month:"long", year:"numeric" });
+
+  uniqBanks(data).forEach(b => {
+    const opt = document.createElement("option");
+    opt.value = b; opt.textContent = b;
+    bankEl.appendChild(opt);
+  });
+
+  function minNextDue(items){
+    let best = null;
+    for (const it of items){
+      const dd = daysDiff(it.due);
+      if (best === null || dd < best) best = dd;
+    }
+    return best ?? 99999;
+  }
+
+  function render() {
+    const q = qEl.value.trim().toLowerCase();
+    const bf = bankEl.value;
+
+    let arr = data.map(p => ({
+      ...p,
+      _banks: [...new Set(p.items.map(i=>i.bank))],
+      _nextDue: minNextDue(p.items),
+      _unpaid: sumUnpaid(p.items),
+    }));
+
+    arr = arr.filter(p => {
+      const matchQ = !q || p.name.toLowerCase().includes(q) || p._banks.some(b => b.toLowerCase().includes(q));
+      const matchB = (bf === "ALL") || p._banks.includes(bf);
+      return matchQ && matchB;
+    });
+
+    if (sortEl.value === "NAME") arr.sort((a,b)=>a.name.localeCompare(b.name,"id"));
+    if (sortEl.value === "SISA_DESC") arr.sort((a,b)=> (b._unpaid) - (a._unpaid));
+    if (sortEl.value === "NEXT_DUE_ASC") arr.sort((a,b)=> a._nextDue - b._nextDue);
+
+    countEl.textContent = `${arr.length} orang`;
+    listEl.innerHTML = "";
+
+    if (!arr.length) {
+      listEl.innerHTML = `<div class="empty">Tidak ada hasil.</div>`;
+      return;
+    }
+
+    for (const p of arr) {
+      const next = p.items
+        .map(it => ({ due: it.due, d: daysDiff(it.due) }))
+        .sort((a,b)=>a.d-b.d)[0];
+
+      let statusLabel = "Aman", status = "ok";
+      if (next) {
+        if (next.d < 0) { statusLabel = "Overdue"; status = "bad"; }
+        else if (next.d <= 3) { statusLabel = "Mepet"; status = "warn"; }
+      }
+
+      const a = document.createElement("a");
+      a.className = "rowLink";
+      a.href = `detail.html?name=${encodeURIComponent(p.name)}`;
+
+      a.innerHTML = `
+        <div class="row">
+          <div>
+            <div class="name">${p.name}</div>
+            <div class="mini">${p._banks.join(" • ")}</div>
+          </div>
+          <div class="meta">
+            <span class="chip ${status}">${statusLabel}</span>
+            <span class="chip amount">Belum lunas: ${fmtIDR(p._unpaid)}</span>
+          </div>
+        </div>
+      `;
+      listEl.appendChild(a);
+    }
+  }
+
+  document.getElementById("resetBtn").addEventListener("click", () => {
+    qEl.value = "";
+    bankEl.value = "ALL";
+    sortEl.value = "NAME";
+    render();
+  });
+
+  [qEl, bankEl, sortEl].forEach(el => el.addEventListener("input", render));
+  render();
+}
+
+/* =======================
+   PAGE: DETAIL
+======================= */
+function initDetail() {
+  const data = window.DEBT_DATA;
+  const name = getParam("name");
+  const p = data.find(x => x.name === name);
+
+  const titleEl = document.getElementById("detailTitle");
+  const backEl = document.getElementById("backName");
+  const boxEl = document.getElementById("detailBox");
+  const todayEl = document.getElementById("todayText");
+
+  todayEl.textContent =
+    "Hari ini: " + new Date().toLocaleDateString("id-ID", { weekday:"long", day:"2-digit", month:"long", year:"numeric" });
+
+  if (!p) {
+    titleEl.textContent = "Data tidak ditemukan";
+    boxEl.innerHTML = `<div class="empty">Nama tidak valid. Kembali ke <a href="index.html">index</a>.</div>`;
+    return;
+  }
+
+  titleEl.textContent = p.name;
+  backEl.textContent = p.name;
+
+  function render() {
+    const total = sum(p.items);
+    const unpaid = sumUnpaid(p.items);
+    const paid = sumPaid(p.items);
+
+    const nextDue = p.items
+      .map(it => ({ iso: it.due, d: daysDiff(it.due) }))
+      .sort((a,b)=>a.d-b.d)[0]?.iso ?? "-";
+
+    const rows = p.items
+      .slice()
+      .sort((a,b)=> new Date(a.due) - new Date(b.due))
+      .map(it => {
+        const cls = dueClass(it.due);
+        const d = daysDiff(it.due);
+        const label = d < 0 ? `(${Math.abs(d)} hari lewat)` : d === 0 ? "(hari ini)" : `(${d} hari lagi)`;
+        const paidNow = isPaid(it.id);
+
+        return `
+          <tr>
+            <td class="bank">${it.bank}</td>
+            <td class="amount">${fmtIDR(it.amount)}</td>
+            <td class="due ${cls}">${fmtDate(it.due)} <span class="muted">${label}</span></td>
+            <td>
+              <button class="btn ${paidNow ? "btnOn" : ""}" data-id="${it.id}">
+                ${paidNow ? "✅ Lunas" : "Tandai Lunas"}
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+    boxEl.innerHTML = `
+      <div class="stats">
+        <div class="stat">
+          <div class="k">NYICIL</div>
+          <div class="v amount">${fmtIDR(p.nyicil)}</div>
+        </div>
+        <div class="stat">
+          <div class="k">Total item</div>
+          <div class="v">${p.items.length} transaksi</div>
+        </div>
+        <div class="stat">
+          <div class="k">Next due</div>
+          <div class="v">${nextDue === "-" ? "-" : fmtDate(nextDue)}</div>
+        </div>
+        <div class="stat">
+          <div class="k">Total nominal</div>
+          <div class="v amount">${fmtIDR(total)}</div>
+        </div>
+        <div class="stat">
+          <div class="k">Sudah lunas</div>
+          <div class="v amount">${fmtIDR(paid)}</div>
+        </div>
+        <div class="stat">
+          <div class="k">Belum lunas</div>
+          <div class="v amount">${fmtIDR(unpaid)}</div>
+        </div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Bank / Pinjol</th>
+            <th>Nominal</th>
+            <th>Jatuh tempo</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>
+
+      <div class="mini" style="margin-top:12px">
+        Tip: status “Lunas” tersimpan di perangkat kamu (localStorage).
+      </div>
+    `;
+
+    // bind buttons
+    boxEl.querySelectorAll("button[data-id]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-id");
+        setPaid(id, !isPaid(id));
+        render();
+      });
+    });
+  }
+
+  render();
+}
+
+/* =======================
+   BOOT
+======================= */
+(function boot(){
+  const page = document.body.getAttribute("data-page");
+  if (page === "index") initIndex();
+  if (page === "detail") initDetail();
+})();
