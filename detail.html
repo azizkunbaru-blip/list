@@ -31,11 +31,25 @@
     .amount{font-variant-numeric:tabular-nums}
     .due.bad{color:var(--bad)} .due.warn{color:var(--warn)} .due.ok{color:var(--ok)}
     .muted{color:rgba(234,240,255,.65)}
-    .btn{padding:9px 10px;border-radius:12px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--text);cursor:pointer}
-    .btn:hover{border-color:rgba(255,255,255,.22)}
-    .btnOn{border-color:rgba(54,211,153,.55);background:rgba(54,211,153,.12)}
     .empty{padding:16px;color:var(--muted)}
     .mini{color:var(--muted);font-size:12px;margin-top:10px}
+
+    /* ✅ Badge status "BELUM LUNAS" (non-click) */
+    .status-badge{
+      display:inline-block;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:800;
+      letter-spacing:.2px;
+      color: var(--bad);
+      background: rgba(251,113,133,.12);
+      border: 1px solid rgba(251,113,133,.55);
+      cursor: not-allowed;
+      user-select: none;
+      pointer-events: none; /* bikin benar-benar tidak bisa klik */
+      white-space: nowrap;
+    }
   </style>
 </head>
 <body data-page="detail">
@@ -62,4 +76,4 @@
   <script src="data.js"></script>
   <script src="app.js"></script>
 </body>
-</html>
+          </html>
