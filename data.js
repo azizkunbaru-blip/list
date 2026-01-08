@@ -91,4 +91,12 @@ window.DEBT_DATA = [
       { id: "kapten-jago-1", bank: "Bank Jago", amount: 355000, due: "2026-01-25" },
     ],
   },
-];
+  {
+    name: "ARI",
+    nyicil: 0,
+    sisa: 229000,
+    items: [
+      { id: "ari-superbank-1", bank: "Superbank", amount: 229000, due: "2026-02-01" },
+    ],
+  },
+  ];
