@@ -21,28 +21,24 @@ const dueClass = (iso) => {
   return "ok";
 };
 
-const storageKey = (itemId) => `paid:${itemId}`;
-const isPaid = (itemId) => localStorage.getItem(storageKey(itemId)) === "1";
-const setPaid = (itemId, val) => localStorage.setItem(storageKey(itemId), val ? "1" : "0");
-
 const getParam = (k) => new URLSearchParams(location.search).get(k);
 
 function sum(items) {
   return items.reduce((s, x) => s + x.amount, 0);
 }
 
+// Tetap dipakai (tanpa paid/lunas), agar hasil sebelumnya (stat-box dll) tetap aman:
 function sumUnpaid(items) {
-  return items.reduce((s, x) => s + (isPaid(x.id) ? 0 : x.amount), 0);
+  return items.reduce((s, x) => s + x.amount, 0);
 }
-
 function sumPaid(items) {
-  return items.reduce((s, x) => s + (isPaid(x.id) ? x.amount : 0), 0);
+  return 0;
 }
 
 function uniqBanks(data) {
   const set = new Set();
-  data.forEach(p => p.items.forEach(i => set.add(i.bank)));
-  return [...set].sort((a,b)=>a.localeCompare(b,"id"));
+  data.forEach((p) => p.items.forEach((i) => set.add(i.bank)));
+  return [...set].sort((a, b) => a.localeCompare(b, "id"));
 }
 
 /* =======================
@@ -58,17 +54,19 @@ function initIndex() {
   const todayEl = document.getElementById("todayText");
 
   todayEl.textContent =
-    "Hari ini: " + new Date().toLocaleDateString("id-ID", { weekday:"long", day:"2-digit", month:"long", year:"numeric" });
+    "Hari ini: " +
+    new Date().toLocaleDateString("id-ID", { weekday: "long", day: "2-digit", month: "long", year: "numeric" });
 
-  uniqBanks(data).forEach(b => {
+  uniqBanks(data).forEach((b) => {
     const opt = document.createElement("option");
-    opt.value = b; opt.textContent = b;
+    opt.value = b;
+    opt.textContent = b;
     bankEl.appendChild(opt);
   });
 
-  function minNextDue(items){
+  function minNextDue(items) {
     let best = null;
-    for (const it of items){
+    for (const it of items) {
       const dd = daysDiff(it.due);
       if (best === null || dd < best) best = dd;
     }
@@ -79,22 +77,22 @@ function initIndex() {
     const q = qEl.value.trim().toLowerCase();
     const bf = bankEl.value;
 
-    let arr = data.map(p => ({
+    let arr = data.map((p) => ({
       ...p,
-      _banks: [...new Set(p.items.map(i=>i.bank))],
+      _banks: [...new Set(p.items.map((i) => i.bank))],
       _nextDue: minNextDue(p.items),
-      _unpaid: sumUnpaid(p.items),
+      _unpaid: sumUnpaid(p.items), // total semua item (karena belum ada fitur lunas)
     }));
 
-    arr = arr.filter(p => {
-      const matchQ = !q || p.name.toLowerCase().includes(q) || p._banks.some(b => b.toLowerCase().includes(q));
-      const matchB = (bf === "ALL") || p._banks.includes(bf);
+    arr = arr.filter((p) => {
+      const matchQ = !q || p.name.toLowerCase().includes(q) || p._banks.some((b) => b.toLowerCase().includes(q));
+      const matchB = bf === "ALL" || p._banks.includes(bf);
       return matchQ && matchB;
     });
 
-    if (sortEl.value === "NAME") arr.sort((a,b)=>a.name.localeCompare(b.name,"id"));
-    if (sortEl.value === "SISA_DESC") arr.sort((a,b)=> (b._unpaid) - (a._unpaid));
-    if (sortEl.value === "NEXT_DUE_ASC") arr.sort((a,b)=> a._nextDue - b._nextDue);
+    if (sortEl.value === "NAME") arr.sort((a, b) => a.name.localeCompare(b.name, "id"));
+    if (sortEl.value === "SISA_DESC") arr.sort((a, b) => b._unpaid - a._unpaid);
+    if (sortEl.value === "NEXT_DUE_ASC") arr.sort((a, b) => a._nextDue - b._nextDue);
 
     countEl.textContent = `${arr.length} orang`;
     listEl.innerHTML = "";
@@ -106,13 +104,19 @@ function initIndex() {
 
     for (const p of arr) {
       const next = p.items
-        .map(it => ({ due: it.due, d: daysDiff(it.due) }))
-        .sort((a,b)=>a.d-b.d)[0];
+        .map((it) => ({ due: it.due, d: daysDiff(it.due) }))
+        .sort((a, b) => a.d - b.d)[0];
 
-      let statusLabel = "Aman", status = "ok";
+      let statusLabel = "Aman",
+        status = "ok";
       if (next) {
-        if (next.d < 0) { statusLabel = "Overdue"; status = "bad"; }
-        else if (next.d <= 3) { statusLabel = "Mepet"; status = "warn"; }
+        if (next.d < 0) {
+          statusLabel = "Overdue";
+          status = "bad";
+        } else if (next.d <= 3) {
+          statusLabel = "Mepet";
+          status = "warn";
+        }
       }
 
       const a = document.createElement("a");
@@ -142,7 +146,7 @@ function initIndex() {
     render();
   });
 
-  [qEl, bankEl, sortEl].forEach(el => el.addEventListener("input", render));
+  [qEl, bankEl, sortEl].forEach((el) => el.addEventListener("input", render));
   render();
 }
 
@@ -152,7 +156,7 @@ function initIndex() {
 function initDetail() {
   const data = window.DEBT_DATA;
   const name = getParam("name");
-  const p = data.find(x => x.name === name);
+  const p = data.find((x) => x.name === name);
 
   const titleEl = document.getElementById("detailTitle");
   const backEl = document.getElementById("backName");
@@ -160,7 +164,8 @@ function initDetail() {
   const todayEl = document.getElementById("todayText");
 
   todayEl.textContent =
-    "Hari ini: " + new Date().toLocaleDateString("id-ID", { weekday:"long", day:"2-digit", month:"long", year:"numeric" });
+    "Hari ini: " +
+    new Date().toLocaleDateString("id-ID", { weekday: "long", day: "2-digit", month: "long", year: "numeric" });
 
   if (!p) {
     titleEl.textContent = "Data tidak ditemukan";
@@ -174,34 +179,31 @@ function initDetail() {
   function render() {
     const total = sum(p.items);
     const unpaid = sumUnpaid(p.items);
-    const paid = sumPaid(p.items);
+    const paid = sumPaid(p.items); // tetap 0 (karena tombol lunas dihapus)
 
     const nextDue = p.items
-      .map(it => ({ iso: it.due, d: daysDiff(it.due) }))
-      .sort((a,b)=>a.d-b.d)[0]?.iso ?? "-";
+      .map((it) => ({ iso: it.due, d: daysDiff(it.due) }))
+      .sort((a, b) => a.d - b.d)[0]?.iso ?? "-";
 
     const rows = p.items
       .slice()
-      .sort((a,b)=> new Date(a.due) - new Date(b.due))
-      .map(it => {
+      .sort((a, b) => new Date(a.due) - new Date(b.due))
+      .map((it) => {
         const cls = dueClass(it.due);
         const d = daysDiff(it.due);
         const label = d < 0 ? `(${Math.abs(d)} hari lewat)` : d === 0 ? "(hari ini)" : `(${d} hari lagi)`;
-        const paidNow = isPaid(it.id);
 
+        // ✅ GANTI tombol interaktif jadi badge statis tidak bisa diklik
         return `
           <tr>
             <td class="bank">${it.bank}</td>
             <td class="amount">${fmtIDR(it.amount)}</td>
             <td class="due ${cls}">${fmtDate(it.due)} <span class="muted">${label}</span></td>
-            <td>
-              <button class="btn ${paidNow ? "btnOn" : ""}" data-id="${it.id}">
-                ${paidNow ? "✅ Lunas" : "Tandai Lunas"}
-              </button>
-            </td>
+            <td><span class="status-badge" aria-disabled="true">BELUM LUNAS</span></td>
           </tr>
         `;
-      }).join("");
+      })
+      .join("");
 
     boxEl.innerHTML = `
       <div class="stats">
@@ -244,18 +246,9 @@ function initDetail() {
       </table>
 
       <div class="mini" style="margin-top:12px">
-        Tip: status “Lunas” tersimpan di perangkat kamu (localStorage).
+        Status hanya tampilan (view only) dan tidak bisa diubah.
       </div>
     `;
-
-    // bind buttons
-    boxEl.querySelectorAll("button[data-id]").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const id = btn.getAttribute("data-id");
-        setPaid(id, !isPaid(id));
-        render();
-      });
-    });
   }
 
   render();
@@ -264,7 +257,7 @@ function initDetail() {
 /* =======================
    BOOT
 ======================= */
-(function boot(){
+(function boot() {
   const page = document.body.getAttribute("data-page");
   if (page === "index") initIndex();
   if (page === "detail") initDetail();
