@@ -260,7 +260,7 @@ const paid = Math.min(total, (p.nyicil || 0));
 
   <div class="payNumber">
     <span>083136937804</span>
-    <small>a.n Pemilik Hutang</small>
+    <small>a.n MINANUL AZIZ</small>
   </div>
 
   <div class="payNote">
