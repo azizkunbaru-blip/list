@@ -31,6 +31,67 @@
     .chip.bad{border-color:rgba(251,113,133,.55);background:rgba(251,113,133,.12)}
     .amount{font-variant-numeric:tabular-nums}
     .empty{padding:16px;color:var(--muted)}
+    /* =====================
+   POPUP MOTIVASI
+===================== */
+.popupOverlay{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.55);
+  backdrop-filter: blur(6px);
+  z-index:9999;
+  opacity:0;
+  pointer-events:none;
+  transition: opacity .25s ease;
+  padding:18px;
+}
+.popupOverlay.show{
+  opacity:1;
+  pointer-events:auto;
+}
+.popupCard{
+  width:min(520px, 100%);
+  border-radius:18px;
+  padding:18px 16px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(18,26,51,.92);
+  box-shadow:0 18px 40px rgba(0,0,0,.35);
+  transform: translateY(18px) scale(.96);
+  opacity:0;
+  transition: transform .25s ease, opacity .25s ease;
+}
+.popupOverlay.show .popupCard{
+  transform: translateY(0) scale(1);
+  opacity:1;
+}
+.popupTitle{
+  font-weight:900;
+  letter-spacing:.5px;
+  font-size:16px;
+}
+.popupSub{
+  margin-top:8px;
+  color:rgba(234,240,255,.75);
+  font-size:13px;
+  line-height:1.4;
+}
+.popupBtn{
+  margin-top:14px;
+  width:100%;
+  padding:10px 12px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.06);
+  color:rgba(234,240,255,.95);
+  font-weight:800;
+  cursor:pointer;
+}
+.popupBtn:hover{
+  border-color:rgba(255,255,255,.26);
+    }
   </style>
 </head>
 <body data-page="index">
