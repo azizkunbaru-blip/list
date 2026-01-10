@@ -276,11 +276,45 @@ const paid = Math.min(total, (p.nyicil || 0));
 
   render();
 }
+function initPopupMotivasi(){
+  const overlay = document.getElementById("popupMotivasi");
+  const closeBtn = document.getElementById("popupClose");
+  if (!overlay || !closeBtn) return;
+
+  // tampil 1x per sesi (bukan selamanya)
+  const KEY = "popupMotivasiShown";
+  if (sessionStorage.getItem(KEY) === "1") return;
+
+  // tampil setelah halaman siap
+  requestAnimationFrame(() => {
+    overlay.classList.add("show");
+    overlay.setAttribute("aria-hidden", "false");
+    sessionStorage.setItem(KEY, "1");
+  });
+
+  const close = () => {
+    overlay.classList.remove("show");
+    overlay.setAttribute("aria-hidden", "true");
+  };
+
+  closeBtn.addEventListener("click", close);
+
+  // klik area gelap untuk tutup
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) close();
+  });
+
+  // tombol ESC untuk tutup
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") close();
+  });
+}
 
 /* =======================
    BOOT
 ======================= */
-(function boot() {
+(function boot(){
+  initPopupMotivasi();
   const page = document.body.getAttribute("data-page");
   if (page === "index") initIndex();
   if (page === "detail") initDetail();
