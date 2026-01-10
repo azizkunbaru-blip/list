@@ -179,11 +179,11 @@ function initDetail() {
   function render() {
     const total = sum(p.items);
 
-// Belum lunas = total - nyicil (minimal 0)
-const unpaid = Math.max(0, total - (p.nyicil || 0));
+// Ambil dari data jika tersedia
+const unpaid = (typeof p.sisa === "number") ? p.sisa : Math.max(0, total - (p.nyicil || 0));
 
-// Sudah lunas = nyicil (maksimal total)
-const paid = Math.min(total, (p.nyicil || 0));
+// Sudah lunas tampilkan "paid_real" jika ada, kalau tidak pakai nyicil
+const paid = (typeof p.paid_real === "number") ? p.paid_real : (p.nyicil || 0);
 
     const nextDue = p.items
       .map((it) => ({ iso: it.due, d: daysDiff(it.due) }))
