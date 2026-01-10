@@ -8,8 +8,9 @@ window.DEBT_DATA = [
       { id: "pieng-kredivo-1", bank: "Kredivo", amount: 112000, due: "2026-01-24" },
       { id: "pieng-kredivo-2", bank: "Kredivo", amount: 112000, due: "2026-01-25" },
       { id: "pieng-kredivo-3", bank: "Kredivo", amount: 112000, due: "2026-01-26" },
-      { id: "pieng-allobank-1", bank: "Allobank", amount: 112000, due: "2026-01-31" },
-      { id: "pieng-allobank-2", bank: "Allobank", amount: 112000, due: "2026-01-31" },
+      { id: "pieng-allobank-1", bank: "Allobank", amount: 112000, due: "2026-02-1" },
+      { id: "pieng-allobank-2", bank: "Allobank", amount: 112000, due: "2026-02-1" },
+      { id: "pieng-allobank-3", bank: "Allobank", amount: 112000, due: "2026-02-1" },
     ],
   },
   {
