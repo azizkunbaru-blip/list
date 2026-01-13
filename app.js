@@ -203,7 +203,13 @@ const paid = (typeof p.paid_real === "number") ? p.paid_real : (p.nyicil || 0);
             <td class="bank">${it.bank}</td>
             <td class="amount">${fmtIDR(it.amount)}</td>
             <td class="due ${cls}">${fmtDate(it.due)} <span class="muted">${label}</span></td>
-            <td><span class="status-badge" aria-disabled="true">BELUM LUNAS</span></td>
+            <td>
+  ${
+    unpaid === 0
+      ? `<span class="status-badge lunas" aria-disabled="true">LUNAS</span>`
+      : `<span class="status-badge belum" aria-disabled="true">BELUM LUNAS</span>`
+  }
+</td>
           </tr>
         `;
       })
