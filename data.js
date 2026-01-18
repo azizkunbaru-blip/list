@@ -12,12 +12,12 @@ window.DEBT_DATA = [
   },
   {
     name: "MAS IS",
-    nyicil: 200000,
+    nyicil: 0,
     sisa: 701000,
     items: [
-      { id: "is-jago-1", bank: "Bank Jago", amount: 359000, due: "2026-01-25" },
-      { id: "is-superbank-1", bank: "Superbank", amount: 230000, due: "2026-02-01" },
-      { id: "is-allobank-1", bank: "Allobank", amount: 111100, due: "2026-02-01" },
+      { id: "is-jago-1", bank: "Bank Jago", amount: 352000, due: "2026-02-25" },
+      { id: "is-jago-2", bank: "Bank Jago", amount: 352000, due: "2026-03-25" },
+      { id: "is-jago-3", bank: "Bank Jago", amount: 352000, due: "2026-04-25" },
     ],
   },
   {
@@ -35,6 +35,7 @@ window.DEBT_DATA = [
     items: [
       { id: "mahmud-kredivo-2", bank: "Kredivo", amount: 112000, due: "2026-01-25" },
       { id: "mahmud-kredivo-3", bank: "Kredivo", amount: 218000, due: "2026-01-26" },
+      { id: "mahmud-kredivo-4", bank: "Kredivo", amount: 112000, due: "2026-02-18" },
     ],
   },
   {
