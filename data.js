@@ -14,7 +14,7 @@ window.DEBT_DATA = [
   {
     name: "MAS IS",
     nyicil: 0,
-    sisa: 701000,
+    sisa: 1056000,
     items: [
       { id: "is-jago-1", bank: "Bank Jago", amount: 352000, due: "2026-02-25" },
       { id: "is-jago-2", bank: "Bank Jago", amount: 352000, due: "2026-03-25" },
