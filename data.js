@@ -73,10 +73,9 @@ window.DEBT_DATA = [
   {
     name: "BAWOR",
     nyicil: 0,
-    sisa: 0,
+    sisa: 112000,
     items: [
-      { id: "bawor-superbank-1", bank: "Superbank", amount: 341000, due: "2026-02-01" },
-      { id: "bawor-allobank-1", bank: "Allobank", amount: 56100, due: "2026-02-01" },
+      { id: "bawor-kredivo-1", bank: "Kredivo", amount: 112000, due: "2026-02-24" },
     ],
   },
   {
