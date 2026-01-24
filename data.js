@@ -31,9 +31,10 @@ window.DEBT_DATA = [
   {
     name: "MAHMUD",
     nyicil: 0,
-    sisa: 112000,
+    sisa: 385000,
     items: [
       { id: "mahmud-kredivo-4", bank: "Kredivo", amount: 112000, due: "2026-02-18" },
+      { id: "mahmud-kredivo-5", bank: "Kredivo", amount: 273000, due: "2026-02-24" },
     ],
   },
   {
