@@ -41,7 +41,8 @@ window.DEBT_DATA = [
     nyicil: 0,
     sisa: 56100,
     items: [
-        { id: "mahes-allobank-1", bank: "Allobank", amount: 56100, due: "2026-02-01" },
+        { id: "mahes-a
+          sx llobank-1", bank: "Allobank", amount: 56100, due: "2026-02-01" },
     ],
   },
   {
@@ -49,7 +50,8 @@ window.DEBT_DATA = [
     nyicil: 0,
     sisa: 872000,
     items: [
-      { id: "jali-jago-1", bank: "Bank Jago", amount: 760000, due: "2026-01-25" },
+      { id: "jali-akulaku-1", bank: "Akulaku", amount: 354000, due: "2026-02-24" },
+      { id: "jali-akulaku-2", bank: "Akulaku", amount: 354000, due: "2026-03-24" },
       { id: "jali-allobank-1", bank: "Allobank", amount: 111100, due: "2026-02-01" },
     ],
   },
