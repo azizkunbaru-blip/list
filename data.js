@@ -39,9 +39,10 @@ window.DEBT_DATA = [
   {
     name: "MAHES",
     nyicil: 0,
-    sisa: 56100,
+    sisa: 168100,
     items: [
         { id: "mahes-allobank-1", bank: "Allobank", amount: 56100, due: "2026-02-01" },
+        { id: "mahes-kredivo-1", bank: "Kredivo", amount: 112000, due: "2026-02-26" },
     ],
   },
   {
