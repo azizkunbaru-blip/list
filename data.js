@@ -68,7 +68,7 @@ window.DEBT_DATA = [
     nyicil: 0,
     sisa: 0,
     items: [
-      { id: "hadi-superbank-1", bank: "Superbank", amount: 35, due: "2026-02-01" },
+      { id: "hadi-superbank-1", bank: "Superbank", amount: 35, due: "2026-02-25" },
     ],
   },
   {
@@ -76,7 +76,7 @@ window.DEBT_DATA = [
     nyicil: 0,
     sisa: 0,
     items: [
-      { id: "bawor-kredivo-1", bank: "Kredivo", amount: 112000, due: "2026-02-24" },
+      { id: "bawor-jago-1", bank: "Bank Jago", amount: 550000, due: "2026-02-24" },
     ],
   },
   {
