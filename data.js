@@ -52,6 +52,7 @@ window.DEBT_DATA = [
     sisa: 820000,
     items: [
       { id: "jali-akulaku-2", bank: "Akulaku", amount: 354000, due: "2026-03-24" },
+      { id: "jali-allobank-1", bank: "Allobank", amount: 112000, due: "2026-03-01" },
     ],
   },
   {
