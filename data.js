@@ -24,7 +24,7 @@ window.DEBT_DATA = [
     nyicil: 0,
     sisa: 0,
     items: [
-      { id: "muria-allobank-1", bank: "Allobank", amount: 122000, due: "2026-02-01" },
+      { id: "muria-allobank-1", bank: "Allobank", amount: 0, due: "2026-02-01" },
     ],
   },
   {
@@ -95,7 +95,7 @@ window.DEBT_DATA = [
     nyicil: 0,
     sisa: 229000,
     items: [
-      { id: "ari-allobank-1", bank: "Allobank", amount: 253000, due: "2026-02-01" },
+      { id: "ari-allobank-1", bank: "Allobank", amount: 253000, due: "2026-03-01" },
     ],
   },
   ];
