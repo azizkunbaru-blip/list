@@ -2,7 +2,7 @@
 window.DEBT_DATA = [
   {
     name: "MAS PIENG",
-    nyicil: 0,
+    nyicil: 150000,
     sisa: 207000,
     items: [
       { id: "pieng-kredivo-2", bank: "Kredivo", amount: 112000, due: "2026-02-19" },
@@ -69,7 +69,7 @@ window.DEBT_DATA = [
     nyicil: 0,
     sisa: 0,
     items: [
-      { id: "hadi-superbank-1", bank: "Superbank", amount: 35, due: "2026-02-25" },
+      { id: "hadi-superbank-1", bank: "Superbank", amount: , due: "2026-02-25" },
     ],
   },
   {
