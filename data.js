@@ -70,7 +70,7 @@ window.DEBT_DATA = [
     nyicil: 0,
     sisa: 0,
     items: [
-      { id: "hadi-superbank-1", bank: "Superbank", amount: , due: "2026-02-25" },
+      { id: "hadi-superbank-1", bank: "Superbank", amount: 0, due: "2026-02-25" },
     ],
   },
   {
