@@ -62,7 +62,7 @@ window.DEBT_DATA = [
     nyicil: 0,
     sisa: 356000,
     items: [
-      { id: "sidik-superbank-1", bank: "Superbank", amount: 3560000, due: "2026-03-01" },
+      { id: "sidik-superbank-1", bank: "Superbank", amount: 356000, due: "2026-03-01" },
     ],
   },
   {
@@ -94,7 +94,7 @@ window.DEBT_DATA = [
   {
     name: "ARI",
     nyicil: 0,
-    sisa: 229000,
+    sisa: 0,
     items: [
       { id: "ari-allobank-1", bank: "Allobank", amount: 253000, due: "2026-03-01" },
     ],
