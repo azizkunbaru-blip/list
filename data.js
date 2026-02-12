@@ -96,7 +96,7 @@ window.DEBT_DATA = [
     nyicil: 0,
     sisa: 0,
     items: [
-      { id: "ari-allobank-1", bank: "Allobank", amount: 253000, due: "2026-03-01" },
+      { id: "ari-julo-1", bank: "Julo", amount: 371000, due: "2026-03-01" },
     ],
   },
   ];
