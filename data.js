@@ -5,8 +5,6 @@ window.DEBT_DATA = [
     nyicil: 150000,
     sisa: 207000,
     items: [
-      { id: "pieng-kredivo-2", bank: "Kredivo", amount: 112000, due: "2026-02-19" },
-      { id: "pieng-kredivo-3", bank: "Kredivo", amount: 218100, due: "2026-02-28" },
     ],
   },
   {
@@ -32,7 +30,6 @@ window.DEBT_DATA = [
     nyicil: 0,
     sisa: 385000,
     items: [
-      { id: "mahmud-kredivo-4", bank: "Kredivo", amount: 112000, due: "2026-02-18" },
       { id: "mahmud-kredivo-5", bank: "Kredivo", amount: 273000, due: "2026-02-24" },
       { id: "mahmud-allobank-1", bank: "Allobank", amount: 112000, due: "2026-03-01" },
       { id: "mahmud-allobank-2", bank: "Allobank", amount: 112000, due: "2026-03-01" },
