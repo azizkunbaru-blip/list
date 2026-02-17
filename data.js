@@ -5,6 +5,7 @@ window.DEBT_DATA = [
     nyicil: 150000,
     sisa: 207000,
     items: [
+      { id: "pieng-allobank-1", bank: "Allobank", amount: 112000, due: "2026-03-01" },
     ],
   },
   {
