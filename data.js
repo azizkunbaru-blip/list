@@ -2,8 +2,8 @@
 window.DEBT_DATA = [
   {
     name: "MAS PIENG",
-    nyicil: 150000,
-    sisa: 207000,
+    nyicil: 0,
+    sisa: 112000,
     items: [
       { id: "pieng-allobank-1", bank: "Allobank", amount: 112000, due: "2026-03-01" },
     ],
@@ -13,7 +13,6 @@ window.DEBT_DATA = [
     nyicil: 0,
     sisa: 1056000,
     items: [
-      { id: "is-jago-1", bank: "Bank Jago", amount: 352000, due: "2026-02-25" },
       { id: "is-jago-2", bank: "Bank Jago", amount: 352000, due: "2026-03-25" },
       { id: "is-jago-3", bank: "Bank Jago", amount: 352000, due: "2026-04-25" },
     ],
@@ -34,6 +33,7 @@ window.DEBT_DATA = [
       { id: "mahmud-kredivo-5", bank: "Kredivo", amount: 273000, due: "2026-02-24" },
       { id: "mahmud-allobank-1", bank: "Allobank", amount: 112000, due: "2026-03-01" },
       { id: "mahmud-allobank-2", bank: "Allobank", amount: 112000, due: "2026-03-01" },
+      { id: "mahmud-julo-1", bank: "Julo", amount: 112000, due: "2026-03-01" },
     ],
   },
   {
